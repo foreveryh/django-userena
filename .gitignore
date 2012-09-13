@@ -34,3 +34,6 @@ demo_project/media/admin
 
 # Temp vim files
 *.swp
+
+# PyCharm
+.idea
