@@ -1,46 +1,44 @@
-from models import InvitationCode
+from django.core.urlresolvers import reverse
+from django.views.generic.base import View
+from django.http import HttpResponseRedirect
+from django.views.generic.edit import CreateView
+from models import InvitationRequest
 from forms import InvitationRequestForm
 
-def invite(request, success_url=None, form_class=InvitationRequestForm,
-           template_name='invitation/invitation_form.html', extra_context=None)
+class InvitationRequestView(CreateView):
     """
     User can request an invitation.
 
     User could request a invitation code after leaving a email address. It will be redirect to success URL if the
      invitation form is valid. Render invitation form template.
 
-    **Required arugments: **
-    None.
+  """
+    template_name = "invitation/request_form.html"
+    model = InvitationRequest
+    form_class = InvitationRequestForm
+    success_url = '/invitation/complete/'#reverse('invitation_complete')
 
-    **Optional arguments: **
-    :success_url:
-        The URL to redirect to successful registration. Default value is ``None``, ``invitation_complete`` will be
-        resolved in this case.
+    def get_client_ip(self, request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
 
-    :form_class:
-        A form class to use for invitation. Takes ``request.user`` as first argument to its constructor. Must have an
-        ``email`` field. Custom validation can be implemented here.
+    def form_valid(self, form):
+        client_ip = self.get_client_ip(self.request)
+        invitation_request = form.save(commit=False)
+        invitation_request.ip = client_ip
+        super(InvitationRequestView, self).form_valid(form)
 
-    :template_name:
-        A custom template to use. Default value is ``invitation/invitation_form.html``
 
-    :extra_context:
-        A dictionary of variables to add to the template context. Any callable object in this dictionary will be called to
-        produce the end result which appears in the context.
 
-    **Template:**
-        ``invitation/invitation_form`` or ``template_name`` keyword argument.
 
-    **Context:**
-        A ``RequestContext`` instance is used rendering the template. Context, in addition to ``extra_context``, contains:
 
-        :form:
-            The invitation form.
-    """
 
-    pass
-        #if request.method == 'POST':
-        #    form = form_class(request.POST, request.FILES)
-        #    if form.is_valid():
+
+
+
 
 

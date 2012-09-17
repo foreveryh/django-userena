@@ -99,6 +99,7 @@ LOGOUT_URL = '/accounts/signout/'
 AUTH_PROFILE_MODULE = 'profiles.Profile'
 USERENA_DISABLE_PROFILE_LIST = True
 USERENA_MUGSHOT_SIZE = 140
+USERENA_ACTIVATION_REQUIRED = False
 
 ROOT_URLCONF = 'demo.urls'
 WSGI_APPLICATION = 'demo.wsgi.application'
@@ -120,6 +121,7 @@ INSTALLED_APPS = (
     'south',
     'userena',
     'userena.contrib.umessages',
+    'userena.contrib.invitation',
     'profiles',
 )
 

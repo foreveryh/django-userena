@@ -117,8 +117,9 @@ class InvitationCode(models.Model):
 class InvitationRequest(models.Model):
     email = models.EmailField(max_length=100, unique=True)
     is_allowed = models.IntegerField(default=0)
-    invite_code = models.ForeignKey(InvitationCode, blank=True, null=True, on_delete=SET_NULL)
+    invite_code = models.ForeignKey(InvitationCode, blank=True, null=True, on_delete=models.SET_NULL)
     ip = models.IPAddressField()
+    #created_at = models.DateTimeField(default=datetime.datetime.now)
 
     def __unicode__(self):
         return '%s request a invitation from ip %s' % (self.email, str(self.ip))

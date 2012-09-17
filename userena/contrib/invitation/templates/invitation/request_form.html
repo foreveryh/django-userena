@@ -1,0 +1,12 @@
+{% extends 'invitation/base.html' %}
+{% load i18n %}
+
+{% block title %}Request An Invitition Code{% endblock %}
+
+{% block body %}
+<form action="" method="post">
+    {% csrf_token %}
+        {{ form }}
+    <input type="submit" value="Apply"/>
+</form>
+{% endblock %}

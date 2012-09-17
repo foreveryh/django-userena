@@ -20,6 +20,7 @@ urlpatterns = patterns('',
     #  {'signup_form': SignupFormExtra}),
 
     (r'^accounts/', include('userena.urls')),
+    (r'^invitation/', include('userena.contrib.invitation.urls')),
     (r'^messages/', include('userena.contrib.umessages.urls')),
     url(r'^$',
         direct_to_template,
