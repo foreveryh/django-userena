@@ -1,9 +1,11 @@
 from django.core.urlresolvers import reverse
-from django.views.generic.base import View
+from django.views.generic.base import View , TemplateResponseMixin
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import CreateView
-from models import InvitationRequest
+from django.views.generic import RedirectView
+from models import InvitationRequest, InvitationCode
 from forms import InvitationRequestForm
+import settings
 
 class InvitationRequestView(CreateView):
     """
@@ -33,9 +35,24 @@ class InvitationRequestView(CreateView):
         super(InvitationRequestView, self).form_valid(form)
 
 
+class InvitationAcceptedView(RedirectView, TemplateResponseMixin):
+    """
+    When user open the invitation link, redirect a correct view.
+    """
+    template_name = 'invitation/invalid_invite_code.html'
+    url = reverse('invitation_signup')
 
-
-
+    def get(self, request, *args, **kwargs):
+        """
+        """
+        if settings.INVITE_MODE:
+            invite_code = self.kwargs['code']
+            if invite_code and InvitationCode.objects.is_invite_code_valid():
+                #redirect to user register page
+                pass
+            else:
+                return self.render_to_response({})
+        super(InvitationAcceptedView, self).get(request)
 
 
 

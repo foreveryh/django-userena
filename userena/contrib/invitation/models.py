@@ -13,9 +13,9 @@ import hashlib
 
 
 SHA1_RE = re.compile('^[a-f0-9]{40}$')
-def code_generator(size=6, username='tukeq'):
-    salt = hashlib.sha1(str(random.random())).hexdigest()[1:size]
-    code = hashlib.sha1("%s%s%s" % (timezone.now(), salt, username)).hexdigest()
+def code_generator(size):
+    salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
+    code = hashlib.sha1("%s%s" % (timezone.now(), salt)).hexdigest()[1:size]
     return code
 
 
@@ -30,7 +30,7 @@ class InvitationCodeManager(models.Manager):
         """
         result_list = []
         for i in range(num):
-            code = code_generator(username=user.username)
+            code = code_generator(size=settings.INVITE_CODE_SIZE)
             invitation = self.model(owner=user,invite_code=code)
             result_list.append(invitation)
         return result_list
@@ -115,7 +115,7 @@ class InvitationCode(models.Model):
         self.use_time = timezone.now
         self.save()
 
-    def send_email(self, email=None, site=None, request=None):
+    def send_email(self, email, site=None, request=None):
         """
                 Send invitation email.
 
@@ -138,7 +138,6 @@ class InvitationCode(models.Model):
                     :expiration_days:   ``INVITATION_EXPIRE_DAYS``  setting.
                     :site: ``Site`` instance to be used.
         """
-        email = email or self.email
         if site is None:
             if Site._meta.installed:
                 site = Site.objects.get_current()

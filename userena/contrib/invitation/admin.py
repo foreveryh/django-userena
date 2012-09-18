@@ -12,8 +12,7 @@ admin.site.register(InvitationCode, InvitationAdmin)
 
 class InvitationRequestAdmin(admin.ModelAdmin):
     fields = ('invite_code',)
-    list_display = ['email', 'invite_code', 'ip', 'is_allowed']
+    list_display = ['email', 'invite_code', 'ip', 'created_at']
     search_fields = ('email',)
-    list_filter = ('is_allowed',)
 
 admin.site.register(InvitationRequest, InvitationRequestAdmin)
