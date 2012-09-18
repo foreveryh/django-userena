@@ -1,0 +1,4 @@
+{% load i18n %}
+{% blocktrans with site.name as sitename %}
+您的申请已经通过，欢迎加入 {{ sitename }}
+{% endblocktrans %}

@@ -1,0 +1,6 @@
+{% extends "invitation/base.html" %}
+{% load i18n %}
+{% block body%}
+    <h2>您已经成功获得内测资格！</h2>
+    <a href="{% url registration_register %}?code={{ invitation_code }}">-&gt; 马上注册</a>
+{% endblock %}
