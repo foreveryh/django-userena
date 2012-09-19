@@ -32,6 +32,7 @@ class InvitationCodeManager(models.Manager):
         for i in range(num):
             code = code_generator(size=settings.INVITE_CODE_SIZE)
             invitation = self.model(owner=user,invite_code=code)
+            invitation.save()
             result_list.append(invitation)
         return result_list
 
