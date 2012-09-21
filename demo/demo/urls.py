@@ -7,6 +7,7 @@ from django.conf.urls.static import static
 from profiles.forms import SignupFormExtra
 
 from django.contrib import admin
+from userena.contrib.invitation.views import InvitationSignupView
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -15,12 +16,12 @@ urlpatterns = patterns('',
 
     # Demo Override the signup form with our own, which includes a
     # first and last name.
-    # (r'^accounts/signup/$',
-    #  'userena.views.signup',
-    #  {'signup_form': SignupFormExtra}),
+     (r'^accounts/signup/$',
+      InvitationSignupView.as_view()),
+     # {'signup_form': SignupFormExtra}),
 
     (r'^accounts/', include('userena.urls')),
-    (r'^invitation/', include('userena.contrib.invitation.urls')),
+    (r'^invite/', include('userena.contrib.invitation.urls')),
     (r'^messages/', include('userena.contrib.umessages.urls')),
     url(r'^$',
         direct_to_template,

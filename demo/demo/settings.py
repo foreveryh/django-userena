@@ -20,7 +20,6 @@ DATABASES = {
 }
 
 # Internationalization
-TIME_ZONE = 'America/Chicago'
 LANGUAGE_CODE = 'en-us'
 ugettext = lambda s: s
 LANGUAGES = (
@@ -100,6 +99,10 @@ AUTH_PROFILE_MODULE = 'profiles.Profile'
 USERENA_DISABLE_PROFILE_LIST = True
 USERENA_MUGSHOT_SIZE = 140
 USERENA_ACTIVATION_REQUIRED = False
+
+
+INVITATION_MODE = True
+INVITATION_INVITE_ONLY = True
 
 ROOT_URLCONF = 'demo.urls'
 WSGI_APPLICATION = 'demo.wsgi.application'
