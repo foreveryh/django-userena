@@ -126,7 +126,7 @@ def signup(request, signup_form=SignupForm,
 
             if success_url: redirect_to = success_url
             else: redirect_to = reverse('userena_signup_complete',
-                                        kwargs={'username': user.username})
+                                        kwargs={'uid': user.id})
 
             # A new signed user should logout the old one.
             if request.user.is_authenticated():
@@ -183,9 +183,9 @@ def activate(request, activation_key,
             messages.success(request, _('Your account has been activated and you have been signed in.'),
                              fail_silently=True)
 
-        if success_url: redirect_to = success_url % {'username': user.username }
+        if success_url: redirect_to = success_url % {'uid': user.id }
         else: redirect_to = reverse('userena_profile_detail',
-                                    kwargs={'username': user.username})
+                                    kwargs={'uid': user.id})
         return redirect(redirect_to)
     else:
         if not extra_context: extra_context = dict()
@@ -232,14 +232,14 @@ def email_confirm(request, confirmation_key,
 
         if success_url: redirect_to = success_url
         else: redirect_to = reverse('userena_email_confirm_complete',
-                                    kwargs={'username': user.username})
+                                    kwargs={'uid': user.id})
         return redirect(redirect_to)
     else:
         if not extra_context: extra_context = dict()
         return ExtraContextTemplateView.as_view(template_name=template_name,
                                             extra_context=extra_context)(request)
 
-def direct_to_user_template(request, username, template_name,
+def direct_to_user_template(request, uid, template_name,
                             extra_context=None):
     """
     Simple wrapper for Django's :func:`direct_to_template` view.
@@ -269,7 +269,7 @@ def direct_to_user_template(request, username, template_name,
         The currently :class:`User` that is viewed.
 
     """
-    user = get_object_or_404(User, username__iexact=username)
+    user = get_object_or_404(User, id=uid)
 
     if not extra_context: extra_context = dict()
     extra_context['viewed_user'] = user
@@ -347,7 +347,7 @@ def signin(request, auth_form=AuthenticationForm,
                 return redirect(redirect_to)
             else:
                 return redirect(reverse('userena_disabled',
-                                        kwargs={'username': user.username}))
+                                        kwargs={'uid': user.uid }))
 
     if not extra_context: extra_context = dict()
     extra_context.update({
@@ -378,8 +378,8 @@ def signout(request, next_page=userena_settings.USERENA_REDIRECT_ON_SIGNOUT,
     return Signout(request, next_page, template_name, *args, **kwargs)
 
 @secure_required
-@permission_required_or_403('change_user', (User, 'username', 'username'))
-def email_change(request, username, email_form=ChangeEmailForm,
+@permission_required_or_403('change_user', (User, 'id', 'uid'))
+def email_change(request, uid, email_form=ChangeEmailForm,
                  template_name='userena/email_form.html', success_url=None,
                  extra_context=None):
     """
@@ -421,7 +421,7 @@ def email_change(request, username, email_form=ChangeEmailForm,
     permissions to alter the email address of others.
 
     """
-    user = get_object_or_404(User, username__iexact=username)
+    user = get_object_or_404(User,id=uid)
 
     form = email_form(user)
 
@@ -435,7 +435,7 @@ def email_change(request, username, email_form=ChangeEmailForm,
 
             if success_url: redirect_to = success_url
             else: redirect_to = reverse('userena_email_change_complete',
-                                        kwargs={'username': user.username})
+                                        kwargs={'uid': user.id})
             return redirect(redirect_to)
 
     if not extra_context: extra_context = dict()
@@ -445,8 +445,8 @@ def email_change(request, username, email_form=ChangeEmailForm,
                                             extra_context=extra_context)(request)
 
 @secure_required
-@permission_required_or_403('change_user', (User, 'username', 'username'))
-def password_change(request, username, template_name='userena/password_form.html',
+@permission_required_or_403('change_user', (User, 'id', 'uid'))
+def password_change(request, uid, template_name='userena/password_form.html',
                     pass_form=PasswordChangeForm, success_url=None, extra_context=None):
     """ Change password of user.
 
@@ -484,8 +484,7 @@ def password_change(request, username, template_name='userena/password_form.html
         Form used to change the password.
 
     """
-    user = get_object_or_404(User,
-                             username__iexact=username)
+    user = get_object_or_404(User, id=uid)
 
     form = pass_form(user=user)
 
@@ -500,7 +499,7 @@ def password_change(request, username, template_name='userena/password_form.html
 
             if success_url: redirect_to = success_url
             else: redirect_to = reverse('userena_password_change_complete',
-                                        kwargs={'username': user.username})
+                                        kwargs={'uid': user.id})
             return redirect(redirect_to)
 
     if not extra_context: extra_context = dict()
@@ -509,8 +508,8 @@ def password_change(request, username, template_name='userena/password_form.html
     return ExtraContextTemplateView.as_view(template_name=template_name,
                                             extra_context=extra_context)(request)
 @secure_required
-@permission_required_or_403('change_profile', (get_profile_model(), 'user__username', 'username'))
-def profile_edit(request, username, edit_profile_form=EditProfileForm,
+@permission_required_or_403('change_profile', (get_profile_model(), 'user__id', 'uid'))
+def profile_edit(request, uid, edit_profile_form=EditProfileForm,
                  template_name='userena/profile_form.html', success_url=None,
                  extra_context=None, **kwargs):
     """
@@ -554,8 +553,7 @@ def profile_edit(request, username, edit_profile_form=EditProfileForm,
         Instance of the ``Profile`` that is edited.
 
     """
-    user = get_object_or_404(User,
-                             username__iexact=username)
+    user = get_object_or_404(User, id=uid)
 
     profile = user.get_profile()
 
@@ -576,7 +574,7 @@ def profile_edit(request, username, edit_profile_form=EditProfileForm,
                                  fail_silently=True)
 
             if success_url: redirect_to = success_url
-            else: redirect_to = reverse('userena_profile_detail', kwargs={'username': username})
+            else: redirect_to = reverse('user_detail', kwargs={'pk': uid})
             return redirect(redirect_to)
 
     if not extra_context: extra_context = dict()
@@ -585,7 +583,7 @@ def profile_edit(request, username, edit_profile_form=EditProfileForm,
     return ExtraContextTemplateView.as_view(template_name=template_name,
                                             extra_context=extra_context)(request)
 def profile_detail(
-    request, username,
+    request, uid,
     template_name=userena_settings.USERENA_PROFILE_DETAIL_TEMPLATE,
     extra_context=None, **kwargs):
     """
@@ -608,8 +606,7 @@ def profile_detail(
         Instance of the currently viewed ``Profile``.
 
     """
-    user = get_object_or_404(User,
-                             username__iexact=username)
+    user = get_object_or_404(User,id=uid)
     profile = user.get_profile()
     if not profile.can_view_profile(request.user):
         return HttpResponseForbidden(_("You don't have permission to view this profile."))
