@@ -75,7 +75,8 @@ def signin_redirect(redirect=None, user=None):
     if redirect: return redirect
     elif user is not None:
         return userena_settings.USERENA_SIGNIN_REDIRECT_URL % \
-                {'username': user.username}
+                {'username': user.username,
+                 'pk':user.pk}
     else: return settings.LOGIN_REDIRECT_URL
 
 def generate_sha1(string, salt=None):
