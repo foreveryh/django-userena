@@ -5,7 +5,7 @@ from django.views.generic.edit import CreateView
 from django.views.generic import RedirectView
 from models import InvitationRequest, InvitationCode
 from forms import InvitationRequestForm
-import settings
+from django.conf import settings
 from userena.views import signup as userena_signup
 
 is_code_valid = InvitationCode.objects.is_invite_code_valid
@@ -75,5 +75,7 @@ class InvitationSignupView(TemplateView):
 
         return super(InvitationSignupView, self).get(request)
 
+    def post(self, request, *args, **kwargs):
+        return userena_signup(request)
 
 

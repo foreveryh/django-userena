@@ -6,16 +6,17 @@ from django.core.mail import send_mail
 import settings
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
-import string
+from userena.signals import signup_complete
 import random
 import re
 import hashlib
+from pprint import pprint
 
 
-SHA1_RE = re.compile('^[a-f0-9]{40}$')
+SHA1_RE = re.compile('^[a-f0-9]{%s}$' % settings.INVITE_CODE_SIZE)
 def code_generator(size):
     salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
-    code = hashlib.sha1("%s%s" % (timezone.now(), salt)).hexdigest()[1:size]
+    code = hashlib.sha1("%s%s" % (timezone.now(), salt)).hexdigest()[:size]
     return code
 
 
@@ -165,3 +166,9 @@ class InvitationRequest(models.Model):
 
     def __unicode__(self):
         return '%s request a invitation from ip %s' % (self.email, str(self.ip))
+
+
+def save_acceptor(sender, user, **kwargs):
+    pprint(user)
+
+signup_complete.connect(save_acceptor)

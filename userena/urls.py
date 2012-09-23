@@ -2,15 +2,16 @@ from django.conf.urls.defaults import *
 from django.views.generic.base import TemplateView
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
+from contrib.invitation.views import InvitationSignupView
 
 from userena import views as userena_views
 from userena import settings as userena_settings
+from django.conf import settings
+from pprint import pprint
+
 
 urlpatterns = patterns('',
     # Signup, signin and signout
-    url(r'^signup/$',
-       userena_views.signup,
-       name='userena_signup'),
     url(r'^signin/$',
        userena_views.signin,
        name='userena_signin'),
@@ -96,3 +97,14 @@ urlpatterns = patterns('',
        userena_views.ProfileListView.as_view(),
        name='userena_profile_list'),
 )
+
+if 'userena.contrib.invitation' in settings.INSTALLED_APPS and settings.INVITE_MODE:
+    pprint("test")
+    urlpatterns += patterns('',
+        url(r'^signup/$', InvitationSignupView.as_view(), name='userena_signup'))
+else:
+    urlpatterns += patterns('',
+        url(r'^signup/$',
+            userena_views.signup,
+            name='userena_signup')
+    )
