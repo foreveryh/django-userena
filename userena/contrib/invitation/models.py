@@ -6,11 +6,9 @@ from django.core.mail import send_mail
 import settings
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
-from userena.signals import signup_complete
 import random
 import re
 import hashlib
-from pprint import pprint
 
 
 SHA1_RE = re.compile('^[a-f0-9]{%s}$' % settings.INVITE_CODE_SIZE)
@@ -111,10 +109,10 @@ class InvitationCode(models.Model):
         """
             Mark invitation code used.
         """
-        if self.is_usable():
+        if not self.is_usable():
             raise InvitationError('Invitation code is expired.')
         self.acceptor = acceptor
-        self.use_time = timezone.now
+        self.use_time = timezone.now()
         self.save()
 
     def send_email(self, email, site=None, request=None):
@@ -168,7 +166,3 @@ class InvitationRequest(models.Model):
         return '%s request a invitation from ip %s' % (self.email, str(self.ip))
 
 
-def save_acceptor(sender, user, **kwargs):
-    pprint(user)
-
-signup_complete.connect(save_acceptor)

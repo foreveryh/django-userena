@@ -6,3 +6,7 @@ PENDING_LIMIT = getattr(settings, 'INVITATION_PENDING_LIMIT', 1)
 EXPIRE_DAYS = getattr(settings, 'INVITATION_EXPIRE_DAYS', 30)
 DEFAULT_FROM_EMAIL = getattr(settings, 'INVITATION_FROM_EMAIL', 'admin@tukeq.com')
 INVITE_CODE_SIZE = getattr(settings, 'INVITATION_CODE_SIZE', 8) #MUST BE LESS THAN 40
+
+
+from userena.contrib.invitation.signals import import_signal
+import_signal()

@@ -23,7 +23,6 @@ from userena import signals as userena_signals
 from userena import settings as userena_settings
 
 from guardian.decorators import permission_required_or_403
-
 import warnings
 
 class ExtraContextTemplateView(TemplateView):
@@ -118,11 +117,14 @@ def signup(request, signup_form=SignupForm,
         form = signup_form(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
-
+            # Get invite code only if  Invitation mode opened
+            code = None
+            if settings.INVITE_MODE:
+                code = request.GET.get("code")
             # Send the signup complete signal
             userena_signals.signup_complete.send(sender=None,
-                                                 user=user)
-
+                                                 user=user,
+                                                 code=code)
 
             if success_url: redirect_to = success_url
             else: redirect_to = reverse('userena_signup_complete',
