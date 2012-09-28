@@ -8,11 +8,15 @@ from userena.contrib.invitation.forms import InvitationForm
 
 
 class InvitationAdmin(admin.ModelAdmin):
-    list_display = ['owner', 'invite_code', 'acceptor', 'created_at']
+    list_display = ['owner', 'invite_code', 'acceptor', 'created_at', 'use_time', 'is_valid']
     search_fields = ['id', 'owner', 'acceptor']
     actions = ['generate_invitation_10', 'generate_invitation_50']
     form = InvitationForm
 
+    def is_valid(self, obj):
+      return obj.is_usable
+    is_valid.short_description = '是否有效'
+    
     def generate_invitation_10(self, request, queryset):
       # do not care about queryset user selected, just generate code
       InvitationCode.objects.generate_invite_code(request.user, 10)
