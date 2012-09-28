@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import datetime
 from django.utils import timezone
 from django.contrib.sites.models import RequestSite, Site
@@ -82,16 +85,22 @@ class InvitationCodeManager(models.Manager):
 
 
 class InvitationCode(models.Model):
-    owner = models.ForeignKey(User, related_name='invitations')
-    invite_code = models.CharField(max_length=40, unique=True)
-    acceptor = models.ForeignKey(User, blank=True, null=True)
-    use_time = models.DateTimeField(blank=True, null=True)
-    created_at = models.DateTimeField(default=timezone.now)
+    class Meta:
+      verbose_name = verbose_name_plural = '邀请码'
+    owner = models.ForeignKey(User, verbose_name='持有者', related_name='invitations')
+    invite_code = models.CharField('邀请码', max_length=40, unique=True)
+    acceptor = models.ForeignKey(User, verbose_name='接收者', blank=True, null=True)
+    use_time = models.DateTimeField('激活时间', blank=True, null=True)
+    created_at = models.DateTimeField('创建时间', default=timezone.now)
     objects = InvitationCodeManager()
 
     def __unicode__(self):
         return '%s create invite code %s at %s' %\
                (self.owner.username, self.invite_code, str(self.created_at.date()))
+
+    def save(self, force_insert=False, force_update=False, using=None):
+      self.invite_code = code_generator(size=settings.INVITE_CODE_SIZE)
+      super(InvitationCode, self).save(force_insert, force_update, using)
 
     @property
     def _expire_at(self):
@@ -157,10 +166,12 @@ class InvitationCode(models.Model):
 
 
 class InvitationRequest(models.Model):
-    email = models.EmailField(max_length=100, unique=True)
-    invite_code = models.ForeignKey(InvitationCode, blank=True, null=True, on_delete=models.SET_NULL)
-    ip = models.IPAddressField()
-    created_at = models.DateTimeField(default=timezone.now)
+    class Meta:
+      verbose_name = verbose_name_plural = '邀请码请求'
+    email = models.EmailField('邮箱', max_length=100, unique=True)
+    invite_code = models.ForeignKey(InvitationCode, verbose_name='邀请码', blank=True, null=True, on_delete=models.SET_NULL)
+    ip = models.IPAddressField('注册IP')
+    created_at = models.DateTimeField('创建时间', default=timezone.now)
 
     def __unicode__(self):
         return '%s request a invitation from ip %s' % (self.email, str(self.ip))

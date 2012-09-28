@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.forms.fields import EmailField
-from models import InvitationRequest
+from models import InvitationRequest, InvitationCode
 
 class InvitationRequestForm(ModelForm):
     """
@@ -9,3 +9,8 @@ class InvitationRequestForm(ModelForm):
     class Meta:
         model = InvitationRequest
         fields = ('email',)
+
+class InvitationForm(ModelForm):
+  class Meta:
+    model = InvitationCode
+    fields = ('owner', 'acceptor', 'use_time')

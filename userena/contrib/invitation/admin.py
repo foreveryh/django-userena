@@ -4,12 +4,14 @@ from __future__ import unicode_literals
 from django.contrib import admin
 from models import InvitationRequest
 from models import InvitationCode
+from userena.contrib.invitation.forms import InvitationForm
 
 
 class InvitationAdmin(admin.ModelAdmin):
     list_display = ['owner', 'invite_code', 'acceptor', 'created_at']
     search_fields = ['id', 'owner', 'acceptor']
     actions = ['generate_invitation_10', 'generate_invitation_50']
+    form = InvitationForm
 
     def generate_invitation_10(self, request, queryset):
       # do not care about queryset user selected, just generate code
