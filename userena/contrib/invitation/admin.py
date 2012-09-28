@@ -14,9 +14,9 @@ class InvitationAdmin(admin.ModelAdmin):
     form = InvitationForm
 
     def is_valid(self, obj):
-      return obj.is_usable
+      return obj.is_usable()
     is_valid.short_description = '是否有效'
-    
+
     def generate_invitation_10(self, request, queryset):
       # do not care about queryset user selected, just generate code
       InvitationCode.objects.generate_invite_code(request.user, 10)
