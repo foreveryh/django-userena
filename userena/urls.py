@@ -97,14 +97,16 @@ urlpatterns = patterns('',
        userena_views.ProfileListView.as_view(),
        name='userena_profile_list'),
 )
-
+# contributions
 if 'userena.contrib.invitation' in settings.INSTALLED_APPS and settings.INVITE_MODE:
-    pprint("test")
     urlpatterns += patterns('',
         url(r'^signup/$', InvitationSignupView.as_view(), name='userena_signup'))
 else:
     urlpatterns += patterns('',
-        url(r'^signup/$',
-            userena_views.signup,
-            name='userena_signup')
+        url(r'^signup/$', userena_views.signup, name='userena_signup')
+    )
+
+if 'userena.contrib.umessages' in settings.INSTALLED_APPS:
+    urlpatterns += patterns('',
+        url(r'^messages/', include('userena.contrib.umessages.urls'))
     )
