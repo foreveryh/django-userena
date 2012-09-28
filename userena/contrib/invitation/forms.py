@@ -13,4 +13,4 @@ class InvitationRequestForm(ModelForm):
 class InvitationForm(ModelForm):
   class Meta:
     model = InvitationCode
-    fields = ('owner', 'acceptor', 'use_time')
+    fields = ('owner',)

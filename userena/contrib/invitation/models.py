@@ -99,7 +99,8 @@ class InvitationCode(models.Model):
                (self.owner.username, self.invite_code, str(self.created_at.date()))
 
     def save(self, force_insert=False, force_update=False, using=None):
-      self.invite_code = code_generator(size=settings.INVITE_CODE_SIZE)
+      if not self.invite_code:
+        self.invite_code = code_generator(size=settings.INVITE_CODE_SIZE)
       super(InvitationCode, self).save(force_insert, force_update, using)
 
     @property
