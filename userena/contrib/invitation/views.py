@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic.base import View , TemplateResponseMixin, TemplateView
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import CreateView
@@ -73,7 +73,8 @@ class InvitationSignupView(TemplateView):
         else:
             return userena_signup(request)
 
-        return super(InvitationSignupView, self).get(request)
+        return HttpResponseRedirect(reverse('invitation_invite'))
+        #return super(InvitationSignupView, self).get(request)
 
     def post(self, request, *args, **kwargs):
         return userena_signup(request)
