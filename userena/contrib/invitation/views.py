@@ -34,7 +34,7 @@ class InvitationRequestView(CreateView):
         client_ip = self.get_client_ip(self.request)
         invitation_request = form.save(commit=False)
         invitation_request.ip = client_ip
-        super(InvitationRequestView, self).form_valid(form)
+        return super(InvitationRequestView, self).form_valid(form)
 
 
 class InvitationAcceptedView(RedirectView, TemplateResponseMixin):
