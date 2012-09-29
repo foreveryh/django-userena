@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
+from django.contrib.auth.models import User
 from models import InvitationRequest
 from models import InvitationCode
 from userena.contrib.invitation.forms import InvitationForm
@@ -37,7 +38,10 @@ class InvitationRequestAdmin(admin.ModelAdmin):
 
     actions = ['send_invitation']
     def send_invitation(self, request, queryset):
-      pass
+      admin = User.objects.filter(is_superuser=True)[0]
+      for item in queryset:
+        code = InvitationCode.objects.generate_invite_code(admin, 1)[0]
+        code.send_mail(item.email)
     send_invitation.short_description = '发送邀请'
 
 admin.site.register(InvitationRequest, InvitationRequestAdmin)
