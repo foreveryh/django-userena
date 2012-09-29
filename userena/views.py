@@ -117,14 +117,10 @@ def signup(request, signup_form=SignupForm,
         form = signup_form(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
-            # Get invite code only if  Invitation mode opened
-            code = None
-            if settings.INVITE_MODE:
-                code = request.GET.get("code")
             # Send the signup complete signal
             userena_signals.signup_complete.send(sender=None,
                                                  user=user,
-                                                 code=code)
+                                                 request=request)
 
             if success_url: redirect_to = success_url
             else: redirect_to = reverse('userena_signup_complete',

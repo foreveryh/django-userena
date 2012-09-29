@@ -1,6 +1,6 @@
 from django.dispatch import Signal
 
-signup_complete = Signal(providing_args=["user","code"])
+signup_complete = Signal(providing_args=["user","request"])
 activation_complete = Signal(providing_args=["user",])
 confirmation_complete = Signal(providing_args=["user","old_email"])
 password_complete = Signal(providing_args=["user",])
