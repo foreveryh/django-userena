@@ -217,7 +217,7 @@ class EditProfileForm(forms.ModelForm):
                                  max_length=30,
                                  required=False)
     """
-
+    description = forms.CharField(widget=forms.Textarea)
     def __init__(self, *args, **kw):
         super(EditProfileForm, self).__init__(*args, **kw)
         # Put the first and last name at the top
