@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Q
 
 import datetime
+from userena.contrib.umessages.signals import message_sent
 
 class MessageContactManager(models.Manager):
     """ Manager for the :class:`MessageContact` model """
@@ -78,6 +79,7 @@ class MessageManager(models.Manager):
         msg.save_recipients(to_user_list)
         msg.update_contacts(to_user_list)
 
+        message_sent.send(sender=None, message=msg)
         return msg
 
     def get_conversation_between(self, from_user, to_user):
