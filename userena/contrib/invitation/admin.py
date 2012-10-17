@@ -9,7 +9,7 @@ from userena.contrib.invitation.forms import InvitationForm
 
 
 class InvitationAdmin(admin.ModelAdmin):
-    list_display = ['owner', 'invite_code', 'acceptor', 'created_at', 'use_time', 'is_valid']
+    list_display = ['owner', 'invite_code', 'acceptor', 'created_at', 'use_time', 'is_valid', 'link']
     search_fields = ['id', 'owner', 'acceptor']
     actions = ['generate_invitation_10', 'generate_invitation_50']
     form = InvitationForm
@@ -17,6 +17,11 @@ class InvitationAdmin(admin.ModelAdmin):
     def is_valid(self, obj):
       return obj.is_usable()
     is_valid.short_description = '是否有效'
+
+    def link(self, obj):
+      return '<a href="http://tkq.me/accounts/signup/?code=%s"></a>' % obj.invite_code
+    link.short_description = '邀请链接'
+    link.allow_tags = True
 
     def generate_invitation_10(self, request, queryset):
       # do not care about queryset user selected, just generate code
