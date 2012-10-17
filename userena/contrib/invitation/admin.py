@@ -19,7 +19,11 @@ class InvitationAdmin(admin.ModelAdmin):
     is_valid.short_description = '是否有效'
 
     def link(self, obj):
-      return '<a href="http://tkq.me/accounts/signup/?code=%s"></a>' % obj.invite_code
+      if obj.is_usable():
+        return '<a href="/accounts/signup/?code=%s">http://tkq.com/accounts/signup/?code=%s</a>' % \
+             (obj.invite_code, obj.invite_code)
+      else:
+        return '已使用'
     link.short_description = '邀请链接'
     link.allow_tags = True
 
