@@ -345,7 +345,7 @@ def signin(request, auth_form=AuthenticationForm,
                 return redirect(redirect_to)
             else:
                 return redirect(reverse('userena_disabled',
-                                        kwargs={'uid': user.uid }))
+                                        kwargs={'uid': user.id }))
 
     if not extra_context: extra_context = dict()
     extra_context.update({
