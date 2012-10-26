@@ -50,7 +50,7 @@ class InvitationRequestAdmin(admin.ModelAdmin):
       admin = User.objects.filter(is_superuser=True)[0]
       for item in queryset:
         code = InvitationCode.objects.generate_invite_code(admin, 1)[0]
-        code.send_mail(item.email)
+        code.send_email(item.email)
     send_invitation.short_description = '发送邀请'
 
 admin.site.register(InvitationRequest, InvitationRequestAdmin)
