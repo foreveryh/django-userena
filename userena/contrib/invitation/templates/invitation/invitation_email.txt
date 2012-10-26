@@ -1,2 +1,2 @@
 {% load i18n %}
-http://{{site.domain}}{% url invitation_invited invitation.invite_code %}/
+http://{{site.domain}}{% url invitation_signup %}?code={{ invitation.invite_code }}
