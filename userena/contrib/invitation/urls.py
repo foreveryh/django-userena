@@ -8,7 +8,7 @@ urlpatterns = patterns('',
     ),
     url(r'^apply/$',invitation_views.InvitationRequestView.as_view(),
         name='invitation_invite'),
-    url(r'^accepted/$',invitation_views.InvitationAcceptedView.as_view(),
+    url(r'^accepted/%s/$' %(r'(?P<code>[\-_0-9a-zA-Z\.]+)') ,invitation_views.InvitationAcceptedView.as_view(),
         name='invitation_invited'),
     url(r'^signup/$', invitation_views.InvitationSignupView.as_view(), name='invitation_signup'),
 )

@@ -1,2 +1,2 @@
 {% load i18n %}
-http://{{site.domain}}{% url invitation_invited %}
+http://{{site.domain}}{% url invitation_invited invitation.invite_code %}/
