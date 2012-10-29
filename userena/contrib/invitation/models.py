@@ -103,6 +103,9 @@ class InvitationCode(models.Model):
         self.invite_code = code_generator(size=settings.INVITE_CODE_SIZE)
       super(InvitationCode, self).save(force_insert, force_update, using)
 
+    def url(self):
+      return '/accounts/signup/?code=%s' % self.invite_code
+
     @property
     def _expire_at(self):
         return self.created_at + datetime.timedelta(settings.EXPIRE_DAYS)
