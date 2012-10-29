@@ -103,6 +103,7 @@ class InvitationCode(models.Model):
         self.invite_code = code_generator(size=settings.INVITE_CODE_SIZE)
       super(InvitationCode, self).save(force_insert, force_update, using)
 
+    @property
     def url(self):
       return '/accounts/signup/?code=%s' % self.invite_code
 
