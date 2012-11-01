@@ -1,6 +1,6 @@
 from django import template
 
-from userena.contrib.umessages.models import MessageRecipient
+from userena.contrib.umessages.models import MessageRecipient, Message
 
 import re
 
@@ -29,8 +29,7 @@ class MessageCount(template.Node):
             except template.VariableDoesNotExist:
                 return ''
 
-            message_count = MessageRecipient.objects.count_unread_messages_between(user,
-                                                                                   to_user)
+            message_count = Message.objects.count_conversation_between(user, to_user)
 
         context[self.var_name] = message_count
 
