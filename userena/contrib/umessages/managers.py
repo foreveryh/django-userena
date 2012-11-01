@@ -110,6 +110,13 @@ class MessageRecipientManager(models.Manager):
 
         return unread_total
 
+    def count_all_messages_between(self, to_user, from_user):
+      messages = self.filter(Q(sender=from_user, recipients=to_user,
+                               sender_deleted_at__isnull=True) |
+                             Q(sender=to_user, recipients=from_user,
+                               messagerecipient__deleted_at__isnull=True))
+      return messages.count()
+
     def count_unread_messages_between(self, to_user, from_user):
         """
         Returns the amount of unread messages between two users
