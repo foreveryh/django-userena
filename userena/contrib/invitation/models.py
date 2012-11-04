@@ -58,6 +58,15 @@ class InvitationCodeManager(models.Manager):
         invitation = self.get_invite_code(code)
         return invitation and invitation.is_usable()
 
+    def is_from_applicant(self, code):
+        try:
+            invitation_request = InvitationRequest.objects.get(invite_code__invite_code=code)
+            email = invitation_request.email
+            return email
+        except InvitationRequest.DoesNotExist:
+            return False
+
+
     def remaining_invite_code_for_user(self, user):
         """
             Return the number of remaining invitations for a given ``user``.

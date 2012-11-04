@@ -99,7 +99,6 @@ urlpatterns = patterns('',
 )
 
 if 'userena.contrib.invitation' in settings.INSTALLED_APPS and settings.INVITE_MODE:
-    pprint("test")
     urlpatterns += patterns('',
         url(r'^signup/$', InvitationSignupView.as_view(), name='userena_signup'))
 else:

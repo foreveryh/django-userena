@@ -74,16 +74,17 @@ class SignupForm(forms.Form):
                 raise forms.ValidationError(_('The two password fields didn\'t match.'))
         return self.cleaned_data
 
-    def save(self):
+    def save(self, active=False):
         """ Creates a new user and account. Returns the newly created user. """
         username, email, password = (self.cleaned_data['username'],
                                      self.cleaned_data['email'],
                                      self.cleaned_data['password1'])
 
+        active = not userena_settings.USERENA_ACTIVATION_REQUIRED or active
         new_user = UserenaSignup.objects.create_user(username,
                                                      email,
                                                      password,
-                                                     not userena_settings.USERENA_ACTIVATION_REQUIRED,
+                                                     active,
                                                      userena_settings.USERENA_ACTIVATION_REQUIRED)
         return new_user
 

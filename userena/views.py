@@ -111,12 +111,18 @@ def signup(request, signup_form=SignupForm,
     if userena_settings.USERENA_WITHOUT_USERNAMES and (signup_form == SignupForm):
         signup_form = SignupFormOnlyEmail
 
-    form = signup_form()
-
+    email = request.session['email']
+    if email:
+        form = signup_form(initial={'email':email})
+    else:
+        form = signup_form()
     if request.method == 'POST':
         form = signup_form(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save()
+            if email:
+                user = form.save(active=True)
+            else:
+                user = form.save()
             # Send the signup complete signal
             userena_signals.signup_complete.send(sender=None,
                                                  user=user,
