@@ -110,8 +110,11 @@ def signup(request, signup_form=SignupForm,
     # default form that doesn't display to enter the username.
     if userena_settings.USERENA_WITHOUT_USERNAMES and (signup_form == SignupForm):
         signup_form = SignupFormOnlyEmail
-
-    email = request.session['email']
+    try:
+        email = request.session['email']
+    except KeyError:
+        email = None
+        
     if email:
         form = signup_form(initial={'email':email})
     else:
