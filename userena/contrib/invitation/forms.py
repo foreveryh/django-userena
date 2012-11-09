@@ -8,7 +8,7 @@ class InvitationRequestForm(ModelForm):
     """
     class Meta:
         model = InvitationRequest
-        fields = ('email',)
+        fields = ('email', 'content')
 
 class InvitationForm(ModelForm):
   class Meta:

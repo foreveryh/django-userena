@@ -42,14 +42,28 @@ admin.site.register(InvitationCode, InvitationAdmin)
 
 class InvitationRequestAdmin(admin.ModelAdmin):
     fields = ('invite_code',)
-    list_display = ['email', 'invite_code', 'ip', 'created_at']
+    list_display = ['email', 'content', 'invite_code', 'ip', 'created_at', 'activated']
     search_fields = ('email',)
+
+    def activated(self, obj):
+      code = obj.invite_code
+      if code.use_time:
+        return '已被用户<a href="/accounts/%s/">%s</a>于%s激活' % (code.acceptor.id, code.acceptor.username, code.use_time)
+      else:
+        return '未激活'
+    activated.short_description = '是否激活'
+    activated.allow_tags = True
 
     actions = ['send_invitation']
     def send_invitation(self, request, queryset):
       admin = User.objects.filter(is_superuser=True)[0]
       for item in queryset:
-        code = InvitationCode.objects.generate_invite_code(admin, 1)[0]
+        if item.invite_code:
+          code = item.invite_code
+        else:
+          code = InvitationCode.objects.generate_invite_code(admin, 1)[0]
+          item.invite_code = code
+          item.save()
         code.send_email(item.email)
     send_invitation.short_description = '发送邀请'
 
