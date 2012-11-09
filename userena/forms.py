@@ -14,7 +14,7 @@ import random
 
 attrs_dict = {'class': 'required'}
 
-USERNAME_RE = r'^[\.\w]+$'
+USERNAME_RE = ur'([_0-9a-zA-Z\u4e00-\u9fcb]+)'
 
 class SignupForm(forms.Form):
     """
@@ -28,7 +28,7 @@ class SignupForm(forms.Form):
                                 max_length=30,
                                 widget=forms.TextInput(attrs=attrs_dict),
                                 label=_("Username"),
-                                error_messages={'invalid': _('Username must contain only letters, numbers, dots and underscores.')})
+                                error_messages={'invalid': u'用户名只能包含汉字，字母，数字及下划线'})
     email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict,
                                                                maxlength=75)),
                              label=_("Email"))
