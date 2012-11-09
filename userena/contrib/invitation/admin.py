@@ -47,10 +47,13 @@ class InvitationRequestAdmin(admin.ModelAdmin):
 
     def activated(self, obj):
       code = obj.invite_code
-      if code.use_time:
-        return '已被用户<a href="/accounts/%s/">%s</a>于%s激活' % (code.acceptor.id, code.acceptor.username, code.use_time)
+      if code:
+        if code.use_time:
+          return '已被用户<a href="/accounts/%s/">%s</a>于%s激活' % (code.acceptor.id, code.acceptor.username, code.use_time)
+        else:
+          return '未激活'
       else:
-        return '未激活'
+        return '尚未分配邀请码'
     activated.short_description = '是否激活'
     activated.allow_tags = True
 
