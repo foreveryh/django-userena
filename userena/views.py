@@ -191,8 +191,7 @@ def activate(request, activation_key,
                              fail_silently=True)
 
         if success_url: redirect_to = success_url % {'uid': user.id }
-        else: redirect_to = reverse('userena_profile_detail',
-                                    kwargs={'uid': user.id})
+        else: redirect_to = reverse('user_detail', args=[user.id])
         return redirect(redirect_to)
     else:
         if not extra_context: extra_context = dict()
