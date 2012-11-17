@@ -6,7 +6,14 @@
 {% block body %}
 <form action="" method="post">
     {% csrf_token %}
-        {{ form }}
+    <form action method="post">
+        {{ form.non_field_errors }}
+            {{ form.subject.errors }}
+            <label for="id_email">邮件地址:</label>
+            {{ form.subject }}
+            {{ form.subject.errors }}
+            <label for="id_content">自我介绍:</label>
+            {{ form.subject }}
     <input type="submit" value="Apply"/>
 </form>
 {% endblock %}

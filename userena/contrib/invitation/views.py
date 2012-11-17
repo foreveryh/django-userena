@@ -37,6 +37,7 @@ class InvitationRequestView(CreateView):
         return super(InvitationRequestView, self).form_valid(form)
 
 
+
 class InvitationAcceptedView(RedirectView, TemplateResponseMixin):
     """
     When user open the invitation link, redirect a correct view.

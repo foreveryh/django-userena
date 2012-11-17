@@ -182,7 +182,7 @@ class InvitationCode(models.Model):
 class InvitationRequest(models.Model):
     class Meta:
       verbose_name = verbose_name_plural = '邀请码请求'
-    email = models.EmailField('邮箱', max_length=100, unique=True)
+    email = models.EmailField('邮箱', max_length=100, unique=True, error_messages={'unique':'您的邮箱已经使用过了╮(╯▽╰)╭'})
     content = models.CharField('申请理由', max_length=2048, default='')
     invite_code = models.ForeignKey(InvitationCode, verbose_name='邀请码', blank=True, null=True, on_delete=models.SET_NULL)
     ip = models.IPAddressField('注册IP')
