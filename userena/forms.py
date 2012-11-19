@@ -140,8 +140,8 @@ class AuthenticationForm(forms.Form):
     A custom form where the identification can be a e-mail address or username.
 
     """
-    identification = identification_field_factory(_(u"Email or username"),
-                                                  _(u"Either supply us with your email or username."))
+    identification = identification_field_factory(_(u"Email"),
+                                                  _(u"Please supply your email."))
     password = forms.CharField(label=_("Password"),
                                widget=forms.PasswordInput(attrs=attrs_dict, render_value=False))
     remember_me = forms.BooleanField(widget=forms.CheckboxInput(),
@@ -220,6 +220,7 @@ class EditProfileForm(forms.ModelForm):
                                  max_length=30,
                                  required=False)
     """
+
     description = forms.CharField(widget=forms.Textarea, label=_(u'旅行哲学'), max_length=140)
     def __init__(self, *args, **kw):
         super(EditProfileForm, self).__init__(*args, **kw)

@@ -7,7 +7,6 @@ from contrib.invitation.views import InvitationSignupView
 from userena import views as userena_views
 from userena import settings as userena_settings
 from django.conf import settings
-from pprint import pprint
 
 
 urlpatterns = patterns('',

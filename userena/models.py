@@ -340,7 +340,8 @@ class UserenaBaseProfile(models.Model):
         """
         # Simple cases first, we don't want to waste CPU and DB hits.
         # Everyone.
-        if self.privacy == 'open': return True
+        if self.privacy == 'open':
+            return True
         # Registered users.
         elif self.privacy == 'registered' and isinstance(user, User):
             return True

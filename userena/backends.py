@@ -1,7 +1,8 @@
 from django.core.validators import email_re
 from django.contrib.auth.backends import ModelBackend
-
 from django.contrib.auth.models import User
+from userena import settings as userena_settings
+
 
 class UserenaAuthenticationBackend(ModelBackend):
     """
@@ -33,8 +34,11 @@ class UserenaAuthenticationBackend(ModelBackend):
             try: user = User.objects.get(email__iexact=identification)
             except User.DoesNotExist: return None
         else:
-            try: user = User.objects.get(username__iexact=identification)
-            except User.DoesNotExist: return None
+            if not userena_settings.USERENA_EMAIL_LOGIN_ONLY:
+                try: user = User.objects.get(username__iexact=identification)
+                except User.DoesNotExist: return None
+            else:
+                return None
         if check_password:
             if user.check_password(password):
                 return user

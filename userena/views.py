@@ -432,9 +432,7 @@ def email_change(request, uid, email_form=ChangeEmailForm,
     form = email_form(user)
 
     if request.method == 'POST':
-        form = email_form(user,
-                               request.POST,
-                               request.FILES)
+        form = email_form(user,request.POST,request.FILES)
 
         if form.is_valid():
             email_result = form.save()
