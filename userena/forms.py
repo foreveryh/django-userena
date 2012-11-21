@@ -211,35 +211,40 @@ class ChangeEmailForm(forms.Form):
 
 class EditProfileForm(forms.ModelForm):
     """ Base form used for fields that are always required """
-    """
-    last_name = forms.CharField(label=_(u'Last name'),
-                                max_length=30,
-                                required=False)
 
-    first_name = forms.CharField(label=_(u'First name'),
-                                 max_length=30,
-                                 required=False)
-    """
-
+    username = forms.RegexField(regex=USERNAME_RE, max_length=30, label=_(u"用户名"),
+        error_messages={'invalid': u'用户名只能包含汉字，字母，数字及下划线'})
     description = forms.CharField(widget=forms.Textarea, label=_(u'旅行哲学'), max_length=140)
-    def __init__(self, *args, **kw):
-        super(EditProfileForm, self).__init__(*args, **kw)
-        # Put the first and last name at the top
-        #new_order = self.fields.keyOrder[:-2]
-        #new_order.insert(0, 'first_name')
-        #new_order.insert(1, 'last_name')
-        #self.fields.keyOrder = new_order
 
     class Meta:
         model = get_profile_model()
-        exclude = ['user', 'nickname', 'slug', 'tags_history', 'guides', 'birthday', 'old_user']
+        exclude = ['user','privacy','mugshot', 'nickname', 'slug', 'tags_history', 'guides', 'birthday', 'old_user']
+
+    def clean_username(self):
+        """
+        Validate that the username is alphanumeric and is not already in use.
+        Also validates that the username is not listed in
+        ``USERENA_FORBIDDEN_USERNAMES`` list.
+
+        """
+        try:
+            user = User.objects.get(username__iexact=self.cleaned_data['username'])
+        except User.DoesNotExist:
+            pass
+        else:
+            profile = self.instance
+            if user == profile.user: pass
+            else: raise forms.ValidationError(_('This username is already in use.'))
+
+        if self.cleaned_data['username'].lower() in userena_settings.USERENA_FORBIDDEN_USERNAMES:
+            raise forms.ValidationError(_('This username is not allowed.'))
+        return self.cleaned_data['username']
+
 
     def save(self, force_insert=False, force_update=False, commit=True):
         profile = super(EditProfileForm, self).save(commit=commit)
-        # Save first and last name
-        #user = profile.user
-        #user.first_name = self.cleaned_data['first_name']
-        #user.last_name = self.cleaned_data['last_name']
-        #user.save()
-
+        # Save Username
+        user = profile.user
+        user.username = self.cleaned_data['username']
+        user.save()
         return profile

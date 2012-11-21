@@ -561,18 +561,17 @@ def profile_edit(request, uid, edit_profile_form=EditProfileForm,
 
     profile = user.get_profile()
 
-    user_initial = {'first_name': user.first_name,
-                    'last_name': user.last_name}
+    user_initial = {'username': user.username,
+                    'description':profile.description,
+                    'gender':profile.gender}
 
     form = edit_profile_form(instance=profile, initial=user_initial)
 
     if request.method == 'POST':
         form = edit_profile_form(request.POST, request.FILES, instance=profile,
                                  initial=user_initial)
-
         if form.is_valid():
             profile = form.save()
-
             if userena_settings.USERENA_USE_MESSAGES:
                 messages.success(request, _('Your profile has been updated.'),
                                  fail_silently=True)

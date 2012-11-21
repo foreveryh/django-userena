@@ -97,7 +97,7 @@ class UserenaSignup(models.Model):
         """
         self.email_unconfirmed = email
 
-        salt, hash = generate_sha1(self.user.username)
+        salt, hash = generate_sha1(self.user.email)
         self.email_confirmation_key = hash
         self.email_confirmation_key_created = get_datetime_now()
         self.save()
