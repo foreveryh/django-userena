@@ -122,10 +122,11 @@ def signup(request, signup_form=SignupForm,
     if request.method == 'POST':
         form = signup_form(request.POST, request.FILES)
         if form.is_valid():
-            if email:
+            if email.lower() == form.email.lower():
                 user = form.save(active=True)
             else:
                 user = form.save()
+                request.session.pop('email')
             # Send the signup complete signal
             userena_signals.signup_complete.send(sender=None,
                                                  user=user,
@@ -280,6 +281,9 @@ def direct_to_user_template(request, uid, template_name,
     if not extra_context: extra_context = dict()
     extra_context['viewed_user'] = user
     extra_context['profile'] = user.get_profile()
+    if user.is_active:
+        extra_context['userena_activation_required'] = False
+
     return ExtraContextTemplateView.as_view(template_name=template_name,
                                             extra_context=extra_context)(request)
 @secure_required
