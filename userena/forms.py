@@ -218,7 +218,8 @@ class EditProfileForm(forms.ModelForm):
 
     class Meta:
         model = get_profile_model()
-        exclude = ['user','privacy','mugshot', 'nickname', 'slug', 'tags_history', 'guides', 'birthday', 'old_user']
+        exclude = ['user','privacy','mugshot', 'nickname', 'slug', 'tags_history', 'guides', 'birthday', 'old_user',
+                   'reputation', 'reputation_base']
 
     def clean_username(self):
         """
