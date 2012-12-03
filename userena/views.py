@@ -122,7 +122,8 @@ def signup(request, signup_form=SignupForm,
     if request.method == 'POST':
         form = signup_form(request.POST, request.FILES)
         if form.is_valid():
-            if email.lower() == form.cleaned_data['email']:
+            if email is not None and 'email' in form.cleaned_data and \
+               email.lower() == form.cleaned_data['email']:
                 user = form.save(active=True)
             else:
                 user = form.save()
