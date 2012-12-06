@@ -85,7 +85,7 @@ class SignupForm(forms.Form):
                                                      email,
                                                      password,
                                                      active,
-                                                     userena_settings.USERENA_ACTIVATION_REQUIRED)
+                                                     not active)
         return new_user
 
 class SignupFormOnlyEmail(SignupForm):
