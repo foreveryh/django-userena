@@ -121,8 +121,11 @@ class InvitationCode(models.Model):
         return self.created_at + datetime.timedelta(settings.EXPIRE_DAYS)
 
     def is_expired(self):
-        #return timezone.now() >= self._expire_at #取消有效期
-        return False
+        if settings.EXPIRE_DAYS == 0:
+            return False
+        else:
+            return timezone.now() >= self._expire_at
+
 
     def is_usable(self):
         """return  ``True`` if invitation is still valid, ``False`` otherwise

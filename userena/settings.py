@@ -97,3 +97,5 @@ USERENA_PROFILE_DETAIL_TEMPLATE = getattr(
 USERENA_HIDE_EMAIL = getattr(settings, 'USERENA_HIDE_EMAIL', False)
 
 USERENA_EMAIL_LOGIN_ONLY = getattr(settings, 'USERENA_EMAIL_LOGIN_ONLY', True)
+
+USERENA_SESSION_KEY = getattr(settings, 'USERENA_SESSION_KEY', 'userena:')

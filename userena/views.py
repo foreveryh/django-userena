@@ -18,7 +18,7 @@ from userena.forms import (SignupForm, SignupFormOnlyEmail, AuthenticationForm,
 from userena.models import UserenaSignup
 from userena.decorators import secure_required
 from userena.backends import UserenaAuthenticationBackend
-from userena.utils import signin_redirect, get_profile_model
+from userena.utils import signin_redirect, get_profile_model, delete_session_data
 from userena import signals as userena_signals
 from userena import settings as userena_settings
 
@@ -112,8 +112,8 @@ def signup(request, signup_form=SignupForm,
         signup_form = SignupFormOnlyEmail
 
     email = None
-    if 'email' in request.session:
-        email = request.session['email']
+    if 'invite_email' in request.session:
+        email = request.session['invite_email']
         form = signup_form(initial={'email':email})
     else:
         form = signup_form()
@@ -132,6 +132,7 @@ def signup(request, signup_form=SignupForm,
                                                  user=user,
                                                  request=request)
 
+            delete_session_data(request)
             if success_url: redirect_to = success_url
             else: redirect_to = reverse('userena_signup_complete',
                                         kwargs={'uid': user.id})

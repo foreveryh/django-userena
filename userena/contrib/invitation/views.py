@@ -71,7 +71,7 @@ class InvitationSignupView(TemplateView):
                 request.session['invite_code'] = invite_code
                 email = InvitationCode.objects.is_from_applicant(invite_code)
                 if email:
-                    request.session['email'] = email
+                    request.session['invite_email'] = email
                 return userena_signup(request)
             elif not settings.INVITE_ONLY:
                 return userena_signup(request)

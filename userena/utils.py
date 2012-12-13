@@ -145,3 +145,13 @@ def get_datetime_now():
         return timezone.now() # pragma: no cover
     except ImportError: # pragma: no cover
         return datetime.datetime.now()
+
+def delete_session_data(self, request):
+    """
+    Clear all session data.
+    """
+    for key in ['invite_email', 'invite_code']:
+        try:
+            del request.session[key]
+        except KeyError:
+            pass
