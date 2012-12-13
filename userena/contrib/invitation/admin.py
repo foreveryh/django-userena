@@ -20,7 +20,7 @@ class InvitationAdmin(admin.ModelAdmin):
 
     def link(self, obj):
       if obj.is_usable():
-        return '<a href="/accounts/signup/?code=%s">http://tkq.com/accounts/signup/?code=%s</a>' % \
+        return '<a href="/accounts/signup/?code=%s">http://tukeq.com/accounts/signup/?code=%s</a>' % \
              (obj.invite_code, obj.invite_code)
       else:
         return '已使用'
