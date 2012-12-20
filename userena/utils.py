@@ -146,7 +146,7 @@ def get_datetime_now():
     except ImportError: # pragma: no cover
         return datetime.datetime.now()
 
-def delete_session_data(self, request):
+def delete_session_data(request):
     """
     Clear all session data.
     """
