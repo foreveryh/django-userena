@@ -28,15 +28,15 @@ msgstr "用户名只能包含英文、数字、英文句号以及下划线。"
 
 #: forms.py:33 forms.py:153 templates/userena/profile_detail.html:34
 msgid "Email"
-msgstr "邮箱"
+msgstr "邮箱地址"
 
 #: forms.py:36
 msgid "Create password"
-msgstr "设置密码"
+msgstr "密码"
 
 #: forms.py:39
 msgid "Repeat password"
-msgstr "重复密码"
+msgstr "确认密码"
 
 #: forms.py:53
 msgid "This username is already taken."
@@ -98,11 +98,11 @@ msgid ""
 "Please enter a correct username or email and password. Note that both fields "
 "are case-sensitive."
 msgstr ""
-"请输入正确的用户名或邮箱地址，以及密码。 注意这两个字段都区分大小写。"
+"请输入正确的邮箱地址和密码，有大小写区分。"
 
 #: forms.py:175 templates/userena/email_confirm_complete.html:6
 msgid "New email"
-msgstr "新邮箱"
+msgstr "新邮箱地址"
 
 #: forms.py:193
 msgid "You're already known under this email."
@@ -451,7 +451,7 @@ msgstr "你的电子邮件地址无法被验证…"
 
 #: templates/userena/email_confirm_fail.html:9
 msgid "You could try changing it again in your account settings."
-msgstr "你可以试试在帐号设置里再更改一次邮件地址。"
+msgstr "你可以试试在帐号设置里再更改一次邮件地址"
 
 #: templates/userena/email_form.html:4 templates/userena/password_form.html:6
 #: templates/userena/profile_form.html:6
@@ -500,7 +500,7 @@ msgstr "你的密码已经更改"
 
 #: templates/userena/password_complete.html:8
 msgid "From now on you can use your new password to signin"
-msgstr "你可以用新密码登录了"
+msgstr "重设密码成功！请使用新密码登录"
 
 #: templates/userena/password_form.html:17
 msgid "Change Password"
@@ -508,7 +508,7 @@ msgstr "更改密码"
 
 #: templates/userena/password_reset_complete.html:4
 msgid "Password reset"
-msgstr "重设密码"
+msgstr "找回密码"
 
 #: templates/userena/password_reset_complete.html:5
 msgid "Your password has been reset"
@@ -518,7 +518,7 @@ msgstr "你的密码已经重设"
 #, python-format
 msgid ""
 "You can now <a href=\"%(signin_url)s\">signin</a> with your new password."
-msgstr "你可以用新密码<a href=\"%(signin_url)s\">登录</a>了。"
+msgstr "重设密码成功！请使用新密码<a href=\"%(signin_url)s\">登录</a>"
 
 #: templates/userena/password_reset_confirm_form.html:4
 #: templates/userena/password_reset_confirm_form.html:13
@@ -539,11 +539,11 @@ msgstr "密码重设信件已经发送"
 #: templates/userena/password_reset_done.html:8
 msgid ""
 "An e-mail has been sent to you which explains how to reset your password."
-msgstr "已经发给你一封解释如何重设密码的邮件。"
+msgstr "我们已将找回密码的邮件发送至你的邮箱，请尽快查阅并按提示找回密码！"
 
 #: templates/userena/password_reset_form.html:13
 msgid "Send password"
-msgstr "发送密码"
+msgstr "提交"
 
 #: templates/userena/profile_detail.html:4
 #, python-format
@@ -736,7 +736,7 @@ msgstr "您收到这封邮件，是因为您申请修改您在 %(site_name)s 的
 
 #: templates/userena/emails/password_reset_message.txt:5
 msgid "Please go to the following page and choose a new password:"
-msgstr "请进入下面的页面，并设置一个新的登录密码："
+msgstr "我们已收到你提交的重设密码申请，请点击以下链接进行："
 
 #: templates/userena/emails/password_reset_message.txt:10
 #, python-format

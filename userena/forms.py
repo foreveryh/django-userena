@@ -28,16 +28,28 @@ class SignupForm(forms.Form):
                                 max_length=30,
                                 widget=forms.TextInput(attrs=attrs_dict),
                                 label=_("Username"),
-                                error_messages={'invalid': u'用户名只能包含汉字，字母，数字及下划线'})
+                                error_messages={'invalid': u'用户名只能包含汉字，字母，数字及下划线',
+                                                'required':u'为自己起一个响亮的名字吧'}
+    )
     email = forms.EmailField(widget=forms.TextInput(attrs=dict(attrs_dict,
                                                                maxlength=75)),
-                             label=_("Email"))
+                             label=_("Email"),
+                             error_messages={'invalid': u'请输入一个有效的邮箱地址',
+                                            'required':u'请输入一个有效的邮箱地址'}
+    )
     password1 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict,
                                                            render_value=False),
-                                label=_("Create password"))
+                                label=_("Create password"),
+                            error_messages={'invalid': u'请输入正确的密码',
+                                            'required':u'请设置你的登录密码',}
+
+    )
     password2 = forms.CharField(widget=forms.PasswordInput(attrs=attrs_dict,
                                                            render_value=False),
-                                label=_("Repeat password"))
+                                label=_("Repeat password"),
+                        error_messages={'invalid': u'请输入正确的密码',
+                                        'required':u'请输入正确的密码'}
+    )
 
     def clean_username(self):
         """
@@ -143,7 +155,9 @@ class AuthenticationForm(forms.Form):
     identification = identification_field_factory(_(u"Email"),
                                                   _(u"Please supply your email."))
     password = forms.CharField(label=_("Password"),
-                               widget=forms.PasswordInput(attrs=attrs_dict, render_value=False))
+                               widget=forms.PasswordInput(attrs=attrs_dict, render_value=False),
+                               error_messages={'required':u'请输入你注册时设置的密码'}
+    )
     remember_me = forms.BooleanField(widget=forms.CheckboxInput(),
                                      required=False,
                                      label=_(u'Remember me for %(days)s') % {'days': _(userena_settings.USERENA_REMEMBER_ME_DAYS[0])})

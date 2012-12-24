@@ -37,3 +37,6 @@ demo_project/media/admin
 
 # PyCharm
 .idea
+
+# DS_Store
+.DS_Store
