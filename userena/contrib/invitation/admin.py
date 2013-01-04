@@ -13,6 +13,7 @@ class InvitationAdmin(admin.ModelAdmin):
     search_fields = ['id', 'owner', 'acceptor']
     actions = ['generate_invitation_10', 'generate_invitation_50']
     form = InvitationForm
+    ordering = ('-created_at', )
 
     def is_valid(self, obj):
       return obj.is_usable()
@@ -44,6 +45,7 @@ class InvitationRequestAdmin(admin.ModelAdmin):
     fields = ('invite_code',)
     list_display = ['email', 'content', 'invite_code', 'ip', 'created_at', 'activated']
     search_fields = ('email',)
+    ordering = ('-created_at', )
 
     def activated(self, obj):
       code = obj.invite_code
