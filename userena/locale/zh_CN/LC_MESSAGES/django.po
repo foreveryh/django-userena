@@ -70,7 +70,7 @@ msgstr "请提供你的电子邮箱。"
 
 #: forms.py:157
 msgid "Password"
-msgstr "密码"
+msgstr "密码:"
 
 #: forms.py:163 forms.py:170
 #, python-format
