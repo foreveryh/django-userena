@@ -13,6 +13,7 @@ class InvitationAdmin(admin.ModelAdmin):
     search_fields = ['id', 'owner', 'acceptor']
     actions = ['generate_invitation_10', 'generate_invitation_50']
     form = InvitationForm
+    ordering = ('-created_at', )
 
     def is_valid(self, obj):
       return obj.is_usable()
@@ -44,6 +45,8 @@ class InvitationRequestAdmin(admin.ModelAdmin):
     fields = ('invite_code',)
     list_display = ['email', 'content', 'invite_code', 'ip', 'created_at', 'activated']
     search_fields = ('email',)
+    ordering = ('-created_at', )
+    actions = ['send_invitation', 'resend_email']
 
     def activated(self, obj):
       code = obj.invite_code
@@ -57,7 +60,6 @@ class InvitationRequestAdmin(admin.ModelAdmin):
     activated.short_description = '是否激活'
     activated.allow_tags = True
 
-    actions = ['send_invitation']
     def send_invitation(self, request, queryset):
       admin = User.objects.filter(is_superuser=True)[0]
       for item in queryset:
@@ -69,5 +71,12 @@ class InvitationRequestAdmin(admin.ModelAdmin):
           item.save()
         code.send_email(item.email)
     send_invitation.short_description = '发送邀请'
+
+    def resend_email(self, request, queryset):
+      for item in queryset:
+        if item.invite_code:
+          code = item.invite_code
+          code.send_email(item.email)
+    resend_email.short_description = '重发邮件'
 
 admin.site.register(InvitationRequest, InvitationRequestAdmin)
