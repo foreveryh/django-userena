@@ -86,15 +86,15 @@ urlpatterns = patterns('',
        name='userena_profile_edit'),
 
     # View profiles
-#    url(r'^(?P<uid>\d+)/$',
-#       userena_views.profile_detail,
-#       name='userena_profile_detail'),
-    url(r'^page/(?P<page>[0-9]+)/$',
-       userena_views.ProfileListView.as_view(),
-       name='userena_profile_list_paginated'),
-    url(r'^$',
-       userena_views.ProfileListView.as_view(),
-       name='userena_profile_list'),
+    # url(r'^(?P<uid>\d+)/$',
+    #   userena_views.profile_detail,
+    #   name='userena_profile_detail'),
+    #url(r'^page/(?P<page>[0-9]+)/$',
+    #   userena_views.ProfileListView.as_view(),
+    #   name='userena_profile_list_paginated'),
+    #url(r'^$',
+    #   userena_views.ProfileListView.as_view(),
+    #   name='userena_profile_list'),
 )
 
 if 'userena.contrib.invitation' in settings.INSTALLED_APPS and settings.INVITE_MODE:
